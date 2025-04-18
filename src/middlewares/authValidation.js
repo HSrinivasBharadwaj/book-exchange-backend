@@ -18,6 +18,8 @@ const validateAuth = async (req, res, next) => {
     req.user=user
     next();
   } catch (error) {
+    console.log("Error details:", error.response?.data || error.message);
+    console.log("Full error:", error);
     return res
       .status(500)
       .json({ message: "Error while fetching the user", error });
