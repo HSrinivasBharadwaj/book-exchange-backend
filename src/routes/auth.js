@@ -1,6 +1,8 @@
 const express = require('express');
 const user = require('../models/user');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const validateAuth = require('../middlewares/authValidation');
 const authRouter = express.Router();
 
 authRouter.post("/signup",async(req,res) => {
@@ -35,11 +37,21 @@ authRouter.post("/login",async(req,res) => {
         }
         const isPasswordCorrect = await bcrypt.compare(password,existingUser.password);
         if (isPasswordCorrect) {
+            const token = await jwt.sign({_id:existingUser}, "Hullur9606@", {
+                expiresIn: "1h"
+            })
+            res.cookie("token",token)
             return res.status(200).json({message: "User Logged In Successfully"})
         }
     } catch (error) {
         return res.status(500).json({message: "Internal Server Error"})
     }
+})
+
+
+authRouter.get("/test",validateAuth,async(req,res) => {
+    const loggedInUser = req.user
+    
 })
 
 
