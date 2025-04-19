@@ -33,7 +33,7 @@ bookRouter.get("/getBooks",validateAuth,async(req,res) => {
     }
 })
 
-bookRouter.get("/getBooks/:id",validateAuth,async(req,res) => {
+bookRouter.get("/getBook/:id",validateAuth,async(req,res) => {
     const {id} = req.params
     try {
         const getBookById = await Book.findById(id);
